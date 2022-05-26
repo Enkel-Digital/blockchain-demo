@@ -60,14 +60,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 import sha256 from "crypto-js/sha256";
 
 export default defineComponent({
   name: "DemoOptions",
 
   data() {
-    // Cannot start with 0 cos no difference right?
     return {
       difficulty: 3,
       blockData: "",
@@ -75,6 +73,8 @@ export default defineComponent({
       pow: 0,
       results: "",
       time: "", // Time in seconds after converting with toFixed()
+
+      startTime: 0,
     };
   },
 
@@ -91,19 +91,18 @@ export default defineComponent({
       this.loading = true;
 
       // Get start time to compute time of hashing later
-      const startTime = performance.now();
+      this.startTime = performance.now();
 
       // Using setTimeout 0 to queue the blocking computeResults call, after DOM UI has been udpated.
       // Without this, the UI wont show the loading UI before the start of the UI being blocked.
       setTimeout(() => {
-        this.computeResults();
-
+        this.computeResults_blocking();
         this.loading = false;
-        this.time = ((performance.now() - startTime) / 1000).toFixed(2);
+        this.time = ((performance.now() - this.startTime) / 1000).toFixed(2);
       }, 0);
     },
 
-    computeResults() {
+    computeResults_blocking() {
       const leadingZeros = "0".repeat(this.difficulty);
 
       let hash: string;
