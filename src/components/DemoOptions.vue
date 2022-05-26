@@ -93,19 +93,23 @@ export default defineComponent({
       // Get start time to compute time of hashing later
       const startTime = performance.now();
 
-      this.computeResults();
+      // Using setTimeout 0 to queue the blocking computeResults call, after DOM UI has been udpated.
+      // Without this, the UI wont show the loading UI before the start of the UI being blocked.
+      setTimeout(() => {
+        this.computeResults();
 
-      this.loading = false;
-      this.time = ((performance.now() - startTime) / 1000).toFixed(2);
+        this.loading = false;
+        this.time = ((performance.now() - startTime) / 1000).toFixed(2);
+      }, 0);
     },
 
     computeResults() {
+      const leadingZeros = "0".repeat(this.difficulty);
+
       let hash: string;
       do {
         hash = sha256(this.blockData + this.pow++).toString();
-      } while (
-        hash.substring(0, this.difficulty) !== "0".repeat(this.difficulty)
-      );
+      } while (hash.substring(0, this.difficulty) !== leadingZeros);
 
       this.results = hash;
     },
