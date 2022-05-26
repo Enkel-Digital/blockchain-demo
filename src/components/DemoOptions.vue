@@ -4,102 +4,55 @@
     <slot name="title"></slot>
 
     <div class="box m-3">
-      <p class="subtitle mb-2">Prop value from parent component (Home.vue)</p>
-
-      {{ new Date(timeAsProp) }}
-    </div>
-
-    <div class="box m-3">
-      <p class="subtitle">State variable from store</p>
-
-      name: {{ name }}
-      <br />
-
-      random: {{ random }}
-    </div>
-
-    <div class="box m-3">
       <label>
-        Enter a new name
+        Set a difficulty level (How many starting zeros)
 
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input
-              v-model="newName"
-              type="text"
-              class="input"
-              placeholder="New Name"
-              @keypress.enter="updateName"
-            />
-          </div>
-          <div class="control">
-            <button class="button is-info" @click="updateName">Update</button>
-          </div>
-        </div>
+        <input
+          v-model="difficulty"
+          type="number"
+          class="input"
+          placeholder="Difficulty level"
+          @keypress.enter="compute"
+        />
       </label>
     </div>
 
     <div class="box m-3">
       <label>
-        Direct 2 way binding using v-model with state variable from store
+        Enter your data
 
         <input
-          v-model="name"
+          v-model="blockData"
           type="text"
           class="input"
-          placeholder="XXX to directly binded to store"
+          placeholder="Whatever data you want in your block"
+          @keypress.enter="compute"
         />
       </label>
     </div>
 
     <div class="box m-3">
       <div class="columns is-vcentered">
-        <div class="column">
-          <p class="subtitle">All data in mainStore</p>
-        </div>
+        <div class="column"><p class="title">Results</p></div>
 
         <div class="column is-narrow">
-          <button class="button is-light is-warning" @click="updateRandom">
-            Update 'random'
-          </button>
-        </div>
-
-        <div class="column is-narrow">
-          <button class="button is-light is-danger" @click="reset">
-            Reset State
+          <button class="button is-light is-success" @click="compute">
+            Compute
           </button>
         </div>
       </div>
 
-      <code>
-        {{ mainStore }}
-      </code>
-    </div>
+      <div v-if="loading" class="mt-5">Loading...</div>
 
-    <div class="box m-3">
-      <p class="subtitle">Test API method</p>
+      <div v-else class="mt-5">
+        Time taken in seconds: <code>{{ time }}</code>
+        <br />
 
-      <div class="columns">
-        <div class="column is-half">
-          <button
-            class="button is-light is-danger is-fullwidth"
-            @click="value = undefined"
-          >
-            Clear Data
-          </button>
-        </div>
-        <div class="column is-half">
-          <button
-            class="button is-light is-success is-fullwidth"
-            @click="getData"
-          >
-            Get Data
-          </button>
-        </div>
-      </div>
+        POW: <code>{{ pow }}</code>
+        <br />
 
-      <div v-if="value" class="mt-5">
-        <code>{{ value }}</code>
+        <!-- Word wrap added as this will be quite long and will overflow on mobile -->
+        Final hash: <code style="word-wrap: break-word">{{ results }}</code>
       </div>
     </div>
   </div>
@@ -108,66 +61,53 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { mapState, mapWritableState, mapActions, mapStores } from "pinia";
-import { useStore } from "../store/index";
-
-import { oof } from "simpler-fetch";
+import sha256 from "crypto-js/sha256";
 
 export default defineComponent({
   name: "DemoOptions",
 
-  // See documentation on using props as initial value without subscribing to changes
-  // https://vuejs.org/guide/components/props.html#one-way-data-flow
-  props: {
-    timeAsProp: {
-      type: Number,
-      required: true,
-      default: Date.now(),
-
-      // See also: prop validation
-      // https://vuejs.org/guide/components/props.html#prop-validation
-    },
-  },
-
   data() {
-    return { newName: undefined, value: undefined };
-  },
-
-  computed: {
-    // Access state data from store inside the component
-    ...mapState(useStore, ["random"]), // Readonly data
-    ...mapWritableState(useStore, ["name"]), // Writable data
-
-    // Alternatively, use this to access the whole store in your component
-    // https://pinia.vuejs.org/cookbook/options-api.html#giving-access-to-the-whole-store
-    // The store will be accessible as its id + 'Store'
-    ...mapStores(useStore),
+    // Cannot start with 0 cos no difference right?
+    return {
+      difficulty: 3,
+      blockData: "",
+      loading: false,
+      pow: 0,
+      results: "",
+      time: "", // Time in seconds after converting with toFixed()
+    };
   },
 
   methods: {
-    // Import an action to use directly in the component
-    ...mapActions(useStore, ["updateRandom"]),
+    // Method to setup UI before calling the expensive computeResults method
+    // As that will block the UI making it hard to load
+    compute() {
+      // Reset the pow and results
+      this.pow = 0;
+      this.results = "";
+      this.time = "";
 
-    updateName() {
-      this.name = this.newName;
-      this.newName = undefined;
+      // Set loading UI
+      this.loading = true;
+
+      // Get start time to compute time of hashing later
+      const startTime = performance.now();
+
+      this.computeResults();
+
+      this.loading = false;
+      this.time = ((performance.now() - startTime) / 1000).toFixed(2);
     },
 
-    reset() {
-      // Use the store's id + 'Store' as the name of the store
-      // Access any actions associated with the imported store like `this.mainStore.myAction()`
-      this.mainStore.$reset();
-    },
+    computeResults() {
+      let hash: string;
+      do {
+        hash = sha256(this.blockData + this.pow++).toString();
+      } while (
+        hash.substring(0, this.difficulty) !== "0".repeat(this.difficulty)
+      );
 
-    // Method to call API for data and set data variable with response
-    async getData() {
-      const res = await oof
-        .GET("https://jsonplaceholder.typicode.com/todos/1")
-        .runJSON()
-        .catch((e) => alert(`Error: ${e.message}`));
-
-      if (!res?.ok) return alert("Failed to get data");
-      this.value = res;
+      this.results = hash;
     },
   },
 });
