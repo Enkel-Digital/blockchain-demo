@@ -8,11 +8,35 @@
     on router-view element in App.vue will be inherited here on this div.
   -->
   <div>
-    <Demo>
-      <template #title>
-        <p class="title">Blockchain Demo</p>
-      </template>
-    </Demo>
+    <!--
+      Component selector tab is wrapped in a sticky navbar.
+      See also the class applied to the html tag in index.html
+    -->
+    <nav class="navbar is-fixed-top">
+      <div class="tabs is-centered">
+        <ul>
+          <li
+            :class="{ 'is-active': tab === 'ComputePOW' }"
+            @click="tab = 'ComputePOW'"
+          >
+            <a>Compute POW</a>
+          </li>
+
+          <li
+            :class="{ 'is-active': tab === 'VerifyPOW' }"
+            @click="tab = 'VerifyPOW'"
+          >
+            <a>Verify POW</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!--
+      Dynamic component used based on the tab selected
+      Reference: https://vuejs.org/guide/essentials/component-basics.html#dynamic-components
+    -->
+    <component :is="tab" />
   </div>
 </template>
 
@@ -20,10 +44,18 @@
 import { defineComponent } from "vue";
 
 import ComputePOW from "../components/ComputePOW.vue";
+import VerifyPOW from "../components/VerifyPOW.vue";
 
 export default defineComponent({
   name: "Home",
 
-  components: { Demo },
+  components: { ComputePOW, VerifyPOW },
+
+  data(): {
+    tab: "ComputePOW" | "VerifyPOW";
+  } {
+    // Default to show compute POW tab
+    return { tab: "ComputePOW" };
+  },
 });
 </script>
