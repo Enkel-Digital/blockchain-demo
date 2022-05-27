@@ -47,7 +47,7 @@ import ComputePOW from "../components/ComputePOW.vue";
 import VerifyPOW from "../components/VerifyPOW.vue";
 
 export default defineComponent({
-  name: "Home",
+  name: "POW",
 
   components: { ComputePOW, VerifyPOW },
 

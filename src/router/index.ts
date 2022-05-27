@@ -22,6 +22,11 @@ export default createRouter({
       name: "home",
       component: Home,
     },
+    {
+      path: "/pow",
+      name: "pow",
+      component: () => import("../views/POW.vue"),
+    },
 
     /* Public only routes */
     // {
