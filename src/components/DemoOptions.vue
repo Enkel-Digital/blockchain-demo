@@ -43,6 +43,9 @@
               <option value="nb-main">
                 Non Blocking (runs on Main Thread)
               </option>
+              <option value="nb-worker">
+                Non Blocking (runs on Web Worker)
+              </option>
               <option value="blocking">Blocking</option>
             </select>
           </div>
@@ -74,6 +77,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import sha256 from "crypto-js/sha256";
+
+import POWWorker from "../pow-worker?worker";
 
 export default defineComponent({
   name: "DemoOptions",
@@ -110,6 +115,31 @@ export default defineComponent({
       switch (this.compute_type) {
         case "nb-main":
           return this.computeResults_nonBlocking();
+
+        case "nb-worker":
+          this.loading = true;
+
+          if (window.Worker) {
+            // https://vitejs.dev/guide/features.html#web-workers
+            const worker = new POWWorker();
+
+            worker.postMessage({
+              blockData: this.blockData,
+              difficulty: this.difficulty,
+            });
+
+            worker.onmessage = (e) => {
+              // Calculate time taken right after computation completes before doing anything else
+              this.time = performance.now() - this.startTime;
+              this.results = e.data.hash;
+              this.pow = e.data.pow;
+              this.loading = false;
+            };
+          } else {
+            alert("Your browser doesn't support Web Workers!");
+          }
+
+          return;
 
         case "blocking":
           // Set loading UI first as UI will freeze
