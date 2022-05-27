@@ -19,7 +19,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import Demo from "../components/DemoOptions.vue";
+import ComputePOW from "../components/ComputePOW.vue";
 
 export default defineComponent({
   name: "Home",

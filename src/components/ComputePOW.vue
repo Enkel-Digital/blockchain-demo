@@ -81,7 +81,7 @@ import sha256 from "crypto-js/sha256";
 import POWWorker from "../pow-worker?worker";
 
 export default defineComponent({
-  name: "DemoOptions",
+  name: "ComputePOW",
 
   data() {
     return {
