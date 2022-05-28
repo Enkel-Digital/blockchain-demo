@@ -23,6 +23,11 @@ export default createRouter({
       component: Home,
     },
     {
+      path: "/hash",
+      name: "hash",
+      component: () => import("../views/Hash.vue"),
+    },
+    {
       path: "/pow",
       name: "pow",
       component: () => import("../views/POW.vue"),
