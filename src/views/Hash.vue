@@ -31,6 +31,15 @@
 
         <div class="column is-narrow">
           <div class="select is-success is-fullwidth">
+            <select v-model="output_type">
+              <option value="hex">Hexadecimal</option>
+              <option value="bits">Bits</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="column is-narrow">
+          <div class="select is-success is-fullwidth">
             <select v-model="hash_function">
               <option value="SHA256">SHA256</option>
               <option value="SHA3">SHA3</option>
@@ -70,11 +79,19 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+// Utility function for converting a hexadecimal string to binary as string type.
+const hex2bin = (data: string) =>
+  data
+    .split("")
+    .map((i) => parseInt(i, 16).toString(2).padStart(4, "0"))
+    .join("");
+
 export default defineComponent({
   name: "Hash",
 
   data() {
     return {
+      output_type: "hex",
       hash_function: "SHA256",
 
       input: "",
@@ -85,6 +102,12 @@ export default defineComponent({
   watch: {
     // Watcher to call updateHash on input change
     input() {
+      this.updateHash();
+    },
+
+    // Watcher to call updateHash on change of output type,
+    // as updateHash function sets the output
+    output_type() {
       this.updateHash();
     },
 
@@ -128,7 +151,8 @@ export default defineComponent({
 
       // Output length config is required because the default length for the SHA3 function is 512bits
       // So this is needed to set to use sha3-256, and the sha256 function will simply ignore this extra config object.
-      this.hash = fn(this.input, { outputLength: 256 }).toString();
+      const hexString = fn(this.input, { outputLength: 256 }).toString();
+      this.hash = this.output_type === "hex" ? hexString : hex2bin(hexString);
     },
 
     reset() {

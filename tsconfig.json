@@ -20,6 +20,12 @@
       // This would allow you to write import "@/some-file", and get all of the correct typing locally.
     },
 
+    "lib": [
+      // Overriding ES2016 value inherited from "@vue/tsconfig/tsconfig.web.json",
+      // to support String.prototype.padStart method.
+      "ES2017"
+    ],
+
     // Allow imports of .json files directly in code and enable type checking
     "resolveJsonModule": true,
 
