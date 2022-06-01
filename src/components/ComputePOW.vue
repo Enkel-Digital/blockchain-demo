@@ -58,7 +58,16 @@
         </div>
       </div>
 
-      <nb-worker
+      <!--
+        Dynamic component used based on the tab selected
+        Reference: https://vuejs.org/guide/essentials/component-basics.html#dynamic-components
+
+        This is not recommended to use especially when using TypeScript,
+        because there is no prop type validation for dynamic components.
+        However, it is ok in this case because all the components take the exact same props.
+      -->
+      <component
+        :is="compute_type"
         class="mt-5"
         :difficulty="difficulty"
         :blockData="blockData"
@@ -72,13 +81,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import POW_NonBlocking_Worker from "./POW_NonBlockingWorker.vue";
+import POW_NonBlockingMain from "./POW_NonBlockingMain.vue";
+import POW_NonBlockingWorker from "./POW_NonBlockingWorker.vue";
+import POW_Blocking from "./POW_Blocking.vue";
 
 export default defineComponent({
   name: "ComputePOW",
 
   components: {
-    "nb-worker": POW_NonBlocking_Worker,
+    "nb-main": POW_NonBlockingMain,
+    "nb-worker": POW_NonBlockingWorker,
+    blocking: POW_Blocking,
   },
 
   data() {
@@ -87,7 +100,7 @@ export default defineComponent({
       blockData: "",
 
       compute_type: "nb-main",
-      startCompute: false,
+      startCompute: undefined,
     };
   },
 
