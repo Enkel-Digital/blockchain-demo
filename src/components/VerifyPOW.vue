@@ -63,9 +63,12 @@
         </div>
       </div>
 
-      <span v-if="verified !== undefined">
-        POW is <code>{{ verified ? "correct" : "wrong" }} </code>
-      </span>
+      <div v-if="verified !== undefined">
+        POW is <code>{{ verified ? "Correct" : "Wrong" }}</code>
+        <br />
+
+        Hash: <code>{{ hash }}</code>
+      </div>
     </div>
   </div>
 </template>
@@ -82,12 +85,14 @@ export default defineComponent({
     blockData: string;
     pow?: number;
     verified?: boolean;
+    hash: string;
   } {
     return {
       difficulty: 3,
       blockData: "",
       pow: undefined,
       verified: undefined,
+      hash: "",
     };
   },
 
@@ -98,9 +103,8 @@ export default defineComponent({
       const leadingZeros = "0".repeat(this.difficulty);
 
       // @todo Need to -1 because of the ++ used when calculating the POW
-      let hash = sha256(this.blockData + (this.pow - 1)).toString();
-
-      this.verified = hash.substring(0, this.difficulty) === leadingZeros;
+      this.hash = sha256(this.blockData + (this.pow - 1)).toString();
+      this.verified = this.hash.substring(0, this.difficulty) === leadingZeros;
     },
   },
 });
