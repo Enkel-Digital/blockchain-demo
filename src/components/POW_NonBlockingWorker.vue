@@ -1,20 +1,22 @@
 <template>
-  <div v-if="loading">Loading...</div>
-
   <!--
-    Only show the results section if the hash has been calculated already.
-    Which means that this will only appear after the first POW is calculated.
-    This will not be shown on load, where there is no POW and time to show yet.
+    Only show the results section if startCompute has been set to a Boolean before.
+    Which means that this will only appear after the user first press compute.
+    This will not be shown on page load, where there is no POW and time to show yet.
   -->
-  <div v-else-if="hash">
-    Time taken in seconds: <code>{{ (time / 1000).toFixed(2) }}</code>
-    <br />
+  <div v-if="startCompute !== undefined">
+    <div v-if="loading">Loading...</div>
 
-    POW: <code>{{ pow }}</code>
-    <br />
+    <div v-else>
+      Time taken in seconds: <code>{{ (time / 1000).toFixed(2) }}</code>
+      <br />
 
-    <!-- Word wrap added as this will be quite long and will overflow on mobile -->
-    Final hash: <code style="word-wrap: break-word">{{ hash }}</code>
+      POW: <code>{{ pow }}</code>
+      <br />
+
+      <!-- Word wrap added as this will be quite long and will overflow on mobile -->
+      Final hash: <code style="word-wrap: break-word">{{ hash }}</code>
+    </div>
   </div>
 </template>
 
@@ -29,7 +31,6 @@ export default defineComponent({
   props: {
     startCompute: {
       type: Boolean,
-      required: true,
     },
 
     difficulty: {
