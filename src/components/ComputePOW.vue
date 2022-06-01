@@ -4,6 +4,12 @@
       <div class="column">
         <p class="title">Compute POW</p>
       </div>
+
+      <div class="column is-narrow">
+        <button class="button is-light is-danger is-fullwidth" @click="reset">
+          Reset
+        </button>
+      </div>
     </div>
 
     <div class="box">
@@ -95,6 +101,22 @@ import POW_NonBlockingMain from "./POW_NonBlockingMain.vue";
 import POW_NonBlockingWorker from "./POW_NonBlockingWorker.vue";
 import POW_Blocking from "./POW_Blocking.vue";
 
+// Move initial state into its own function to use when resetting component state.
+const initialState = () =>
+  ({
+    difficulty: 3,
+    blockData: "",
+
+    compute_type: "nb-main",
+    startCompute: undefined,
+  } as {
+    difficulty: number;
+    blockData: string;
+
+    compute_type: "nb-main" | "nb-worker" | "blocking";
+    startCompute?: boolean;
+  });
+
 export default defineComponent({
   name: "ComputePOW",
 
@@ -104,15 +126,7 @@ export default defineComponent({
     blocking: POW_Blocking,
   },
 
-  data() {
-    return {
-      difficulty: 3,
-      blockData: "",
-
-      compute_type: "nb-main",
-      startCompute: undefined,
-    };
-  },
+  data: initialState,
 
   watch: {
     compute_type() {
@@ -127,6 +141,10 @@ export default defineComponent({
       // Setting this to true will also cause all the inputs to be disabled,
       // so that users cannot modify the input while the POW is being computed.
       this.startCompute = true;
+    },
+
+    reset() {
+      Object.assign(this.$data, initialState());
     },
   },
 });
