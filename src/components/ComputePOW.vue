@@ -1,9 +1,12 @@
 <template>
   <div class="section">
-    <!-- Named slot, see usage in Home.vue -->
-    <slot name="title"></slot>
+    <div class="columns is-multiline">
+      <div class="column">
+        <p class="title">Compute POW</p>
+      </div>
+    </div>
 
-    <div class="box m-3">
+    <div class="box">
       <label>
         Set a difficulty level (How many starting zeros)
 
@@ -12,12 +15,15 @@
           type="number"
           class="input"
           placeholder="Difficulty level"
+          :disabled="startCompute"
           @keypress.enter="compute"
         />
       </label>
     </div>
 
-    <div class="box m-3">
+    <!-- @todo dynamically calculate and show the difficulty level in terms of probabilities? -->
+
+    <div class="box">
       <label>
         Enter your data
 
@@ -26,12 +32,13 @@
           type="text"
           class="input"
           placeholder="Whatever data you want in your block"
+          :disabled="startCompute"
           @keypress.enter="compute"
         />
       </label>
     </div>
 
-    <div class="box m-3">
+    <div class="box">
       <div class="columns is-vcentered">
         <div class="column"><p class="title">Results</p></div>
 
@@ -46,13 +53,16 @@
               <option value="nb-worker">
                 Non Blocking (runs on Web Worker)
               </option>
-              <option value="blocking">Blocking</option>
+              <option value="blocking">Blocking (runs on Main Thread)</option>
             </select>
           </div>
         </div>
 
         <div class="column is-narrow">
-          <button class="button is-light is-success" @click="compute">
+          <button
+            class="button is-light is-success is-fullwidth"
+            @click="compute"
+          >
             Compute
           </button>
         </div>
@@ -104,9 +114,18 @@ export default defineComponent({
     };
   },
 
+  watch: {
+    compute_type() {
+      this.startCompute = undefined;
+    },
+  },
+
   methods: {
+    // Method to set startCompute to true, to trigger the selected
+    // POW component to start computing the POW number.
     compute() {
-      // @todo Disable input while loading
+      // Setting this to true will also cause all the inputs to be disabled,
+      // so that users cannot modify the input while the POW is being computed.
       this.startCompute = true;
     },
   },
