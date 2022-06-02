@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "serve": "npx vite --port 8080",
-    "lint": "npx eslint . --ext .vue,.js,.ts,.cjs,.mjs --fix --ignore-path .gitignore",
+    "lint": "npx eslint ./src/ --ext .vue,.js,.ts,.cjs,.mjs --fix --ignore-path .gitignore",
     "preview": "npx vite preview --port 8080",
-    "build": "npx vite build"
+    "build": "npx vite build",
+    "deploy": "npx simple-github-pages-deploy"
   },
   "dependencies": {
     "bulma": "^0.9.3",
