@@ -26,7 +26,9 @@
       Time taken in seconds: <code>{{ (time / 1000).toFixed(2) }}</code>
       <br />
 
-      POW: <code>{{ pow }}</code>
+      <CopyOnClick :showIcon="true" :textToCopy="pow.toString()">
+        POW: <code>{{ pow }}</code>
+      </CopyOnClick>
       <br />
 
       <!-- Word wrap added as this will be quite long and will overflow on mobile -->
@@ -39,8 +41,12 @@
 import { defineComponent } from "vue";
 import sha256 from "crypto-js/sha256";
 
+import CopyOnClick from "./CopyOnClick.vue";
+
 export default defineComponent({
   name: "Blocking",
+
+  components: { CopyOnClick },
 
   props: {
     startCompute: {

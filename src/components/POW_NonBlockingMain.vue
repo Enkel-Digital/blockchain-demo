@@ -5,7 +5,15 @@
     This will not be shown on page load, where there is no POW and time to show yet.
   -->
   <div v-if="startCompute !== undefined">
-    POW: <code>{{ pow }}</code>
+    <!-- Only make POW copyable once computed, and not clickable while it's still computing -->
+    <span v-if="startCompute === false">
+      <CopyOnClick :showIcon="true" :textToCopy="pow.toString()">
+        POW: <code>{{ pow }}</code>
+      </CopyOnClick>
+    </span>
+    <span v-else>
+      POW: <code>{{ pow }}</code>
+    </span>
     <br />
 
     <div v-if="time">
@@ -24,8 +32,12 @@
 import { defineComponent } from "vue";
 import sha256 from "crypto-js/sha256";
 
+import CopyOnClick from "./CopyOnClick.vue";
+
 export default defineComponent({
   name: "NonBlockingMain",
+
+  components: { CopyOnClick },
 
   props: {
     startCompute: {

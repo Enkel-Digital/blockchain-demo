@@ -22,7 +22,9 @@
       Time taken in seconds: <code>{{ (time / 1000).toFixed(2) }}</code>
       <br />
 
-      POW: <code>{{ pow }}</code>
+      <CopyOnClick :showIcon="true" :textToCopy="pow.toString()">
+        POW: <code>{{ pow }}</code>
+      </CopyOnClick>
       <br />
 
       <!-- Word wrap added as this will be quite long and will overflow on mobile -->
@@ -33,11 +35,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import CopyOnClick from "./CopyOnClick.vue";
 
 import POWWorker from "../pow-worker?worker";
 
 export default defineComponent({
   name: "NonBlockingWorker",
+
+  components: { CopyOnClick },
 
   props: {
     startCompute: {
