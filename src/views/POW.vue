@@ -8,29 +8,30 @@
     on router-view element in App.vue will be inherited here on this div.
   -->
   <div>
-    <!--
-      Component selector tab is wrapped in a sticky navbar.
-      See also the class applied to the html tag in index.html
-    -->
-    <nav class="navbar is-fixed-top">
-      <div class="tabs is-centered">
-        <ul>
-          <li
-            :class="{ 'is-active': tab === 'ComputePOW' }"
+    <!-- Overriding section class's y axis padding to stay consistent with the different POW components -->
+    <div class="section py-0">
+      <div class="columns has-text-centered">
+        <div class="column is-half">
+          <button
+            class="button is-light is-fullwidth"
+            :class="{ 'is-success': tab === 'ComputePOW' }"
             @click="tab = 'ComputePOW'"
           >
-            <a>Compute POW</a>
-          </li>
+            Compute POW
+          </button>
+        </div>
 
-          <li
-            :class="{ 'is-active': tab === 'VerifyPOW' }"
+        <div class="column is-half">
+          <button
+            class="button is-light is-fullwidth"
+            :class="{ 'is-success': tab === 'VerifyPOW' }"
             @click="tab = 'VerifyPOW'"
           >
-            <a>Verify POW</a>
-          </li>
-        </ul>
+            Verify POW
+          </button>
+        </div>
       </div>
-    </nav>
+    </div>
 
     <!--
       Dynamic component used based on the tab selected

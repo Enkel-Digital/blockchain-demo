@@ -2,7 +2,7 @@
   <div class="section">
     <div class="columns is-multiline">
       <div class="column">
-        <p class="title">Verify POW</p>
+        <p class="title">Verify Proof of Work</p>
       </div>
 
       <div class="column is-narrow">

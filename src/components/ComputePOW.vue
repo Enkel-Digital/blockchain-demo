@@ -2,7 +2,7 @@
   <div class="section">
     <div class="columns is-multiline">
       <div class="column">
-        <p class="title">Compute POW</p>
+        <p class="title">Compute Proof of Work</p>
       </div>
 
       <div class="column is-narrow">
@@ -50,7 +50,7 @@
 
         <div class="column is-narrow">
           <div class="select is-success">
-            <select v-model="compute_type">
+            <select v-model="compute_type" :disabled="startCompute">
               <!-- Set compute_type to empty string if using an empty default -->
               <!-- <option disabled value="">Please select one</option> -->
               <option value="nb-main">
@@ -130,6 +130,8 @@ export default defineComponent({
 
   watch: {
     compute_type() {
+      // Set startCompute to undefined everytime a new compute type is selected, so that the selected
+      // POW component will show its initial UI instead of showing the POW of 0 and hash of ""
       this.startCompute = undefined;
     },
   },
