@@ -1,8 +1,38 @@
 <script setup lang="ts">
 import Navbar from "./components/Navbar.vue";
+
+import { useStore } from "./store/index";
+const store = useStore();
 </script>
 
 <template>
+  <!--
+    Use a fixed position and apply overlay style so that the notification will
+    not take up space on the normal plane and push everything else down.
+   -->
+  <div
+    v-if="store.notif"
+    style="position: fixed; top: 1rem; z-index: 100; width: 100%"
+  >
+    <div class="container">
+      <div class="mx-6">
+        <!-- Only apply the box shadow to the notification bar itself -->
+        <div
+          class="notification is-primary is-light"
+          style="box-shadow: 0 0.3rem 1rem rgb(0 0 0 / 0.4)"
+        >
+          <button class="delete" @click="store.clearNotif"></button>
+
+          <!-- Word wrap CSS added to deal with unusually long slugs on small screens -->
+          <span style="word-wrap: break-word">{{ store.notifContent }}</span>
+
+          <!-- Alternative allowing HTML content to be shown -->
+          <!-- <span style="word-wrap: break-word" v-html="store.notifContent" /> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <Navbar />
 
   <!-- Center router view element horizontally -->
