@@ -1,4 +1,15 @@
 <template>
+  <article class="message">
+    <div class="message-body">
+      <p class="subtitle has-text-weight-bold">Note</p>
+
+      The <i>non blocking worker option</i> selected will not show any real time
+      updates while the POW number is calculated, because the calculation will
+      run on a seperate worker thread to speed things up, and communicating
+      updates will negate the speed up.
+    </div>
+  </article>
+
   <!--
     Only show the results section if startCompute has been set to a Boolean before.
     Which means that this will only appear after the user first press compute.

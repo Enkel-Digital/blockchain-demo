@@ -23,10 +23,10 @@
     <div v-if="loading">Loading...</div>
 
     <div v-else>
-      POW: <code>{{ pow }}</code>
+      Time taken in seconds: <code>{{ (time / 1000).toFixed(2) }}</code>
       <br />
 
-      Time taken in seconds: <code>{{ (time / 1000).toFixed(2) }}</code>
+      POW: <code>{{ pow }}</code>
       <br />
 
       <!-- Word wrap added as this will be quite long and will overflow on mobile -->
