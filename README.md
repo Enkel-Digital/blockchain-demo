@@ -21,3 +21,7 @@ npm run build
 
 ## License & Author
 Made available with [MIT license](./LICENSE), created by [JJ](https://github.com/Jaimeloeuf)
+
+
+## Credits
+Credits for the logo gif used: <https://miro.medium.com/max/1400/0*1mxneoYpQDTrYfVW.gif>
