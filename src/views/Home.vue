@@ -15,7 +15,16 @@
       cause center alignment to get screwed up. Thus a new div is needed for margin.
     -->
     <div class="mx-6">
-      <p class="title">Interactive Blockchain Demo</p>
+      <p class="title is-spaced">Interactive Blockchain Demo</p>
+
+      <p class="subtitle">
+        This Interactive Blockchain Demo website was created to help everyone
+        learning about blockchain technology see and experiment to learn how
+        things actually work instead of just reading about it somewhere.
+      </p>
+      <hr />
+
+      <p class="subtitle">Select a concept to start learning!</p>
 
       <router-link
         class="button is-light is-success is-fullwidth is-large"
@@ -35,11 +44,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "Home",
-});
-</script>
