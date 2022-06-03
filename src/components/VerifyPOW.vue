@@ -28,13 +28,11 @@
       <label>
         Enter your data
 
-        <input
+        <textarea
           v-model="blockData"
-          type="text"
-          class="input"
+          class="textarea"
           placeholder="Whatever data you want in your block"
-          @keypress.enter="verify"
-        />
+        ></textarea>
       </label>
     </div>
 
