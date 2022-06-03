@@ -35,6 +35,14 @@
         >
           <span @click="showMobileMenu = false">{{ menuItem.name }}</span>
         </router-link>
+
+        <a
+          class="navbar-item"
+          href="https://github.com/Enkel-Digital/blockchain-demo"
+          target="_blank"
+        >
+          <span @click="showMobileMenu = false">Github</span>
+        </a>
       </div>
     </div>
   </nav>
@@ -52,6 +60,7 @@ export default {
       menuItems: [
         { name: "Hashing", link: { name: "hash" } },
         { name: "Proof of Work", link: { name: "pow" } },
+        { name: "About", link: { name: "about" } },
       ],
     };
   },

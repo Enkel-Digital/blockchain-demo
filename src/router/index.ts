@@ -33,14 +33,11 @@ export default createRouter({
       component: () => import("../views/POW.vue"),
     },
 
-    /* Public only routes */
-    // {
-    //   path: "/login",
-    //   name: "login",
-    //   component: () => import("../views/Login.vue"),
-    // },
-
-    /* Public routes */
+    {
+      path: "/about",
+      name: "about",
+      component: () => import("../views/About.vue"),
+    },
     {
       path: "/:pathMatch(.*)*",
       name: "404",
