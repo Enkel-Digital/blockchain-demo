@@ -58,7 +58,8 @@
               <option value="nb-main">
                 Non Blocking (runs on Main Thread)
               </option>
-              <option value="nb-worker">
+              <!-- Only show the web worker option if the user's browser supports it -->
+              <option v-if="browserSupportWebWorker" value="nb-worker">
                 Non Blocking (runs on Web Worker)
               </option>
               <option value="blocking">Blocking (runs on Main Thread)</option>
@@ -105,12 +106,16 @@ import POW_Blocking from "./POW_Blocking.vue";
 // Move initial state into its own function to use when resetting component state.
 const initialState = () =>
   ({
+    browserSupportWebWorker: Boolean(window.Worker),
+
     difficulty: 3,
     blockData: "",
 
     compute_type: "nb-main",
     startCompute: undefined,
   } as {
+    browserSupportWebWorker: boolean;
+
     difficulty: number;
     blockData: string;
 

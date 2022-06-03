@@ -83,6 +83,12 @@ export default defineComponent({
 
   methods: {
     compute() {
+      // The parent component will detect and only show the drop down option for this component,
+      // if web workers are supported, so this is just an extra check in case that guard fails.
+      // Quit the function and do not set any state.
+      if (!window.Worker)
+        return alert("Your browser doesn't support Web Workers!");
+
       this.loading = true;
 
       // Reset the pow and hash
@@ -93,27 +99,23 @@ export default defineComponent({
       // Get start time to compute time of hashing later
       const startTime = performance.now();
 
-      if (window.Worker) {
-        // https://vitejs.dev/guide/features.html#web-workers
-        const worker = new POWWorker();
+      // https://vitejs.dev/guide/features.html#web-workers
+      const worker = new POWWorker();
 
-        worker.postMessage({
-          blockData: this.blockData,
-          difficulty: this.difficulty,
-        });
+      worker.postMessage({
+        blockData: this.blockData,
+        difficulty: this.difficulty,
+      });
 
-        worker.onmessage = (e) => {
-          // Calculate time taken right after computation completes before doing anything else
-          this.time = performance.now() - startTime;
-          this.hash = e.data.hash;
-          this.pow = e.data.pow;
-          this.loading = false;
+      worker.onmessage = (e) => {
+        // Calculate time taken right after computation completes before doing anything else
+        this.time = performance.now() - startTime;
+        this.hash = e.data.hash;
+        this.pow = e.data.pow;
+        this.loading = false;
 
-          this.$emit("compute-done");
-        };
-      } else {
-        alert("Your browser doesn't support Web Workers!");
-      }
+        this.$emit("compute-done");
+      };
     },
   },
 });
