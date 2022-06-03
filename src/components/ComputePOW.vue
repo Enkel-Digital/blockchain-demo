@@ -6,7 +6,11 @@
       </div>
 
       <div class="column is-narrow">
-        <button class="button is-light is-danger is-fullwidth" @click="reset">
+        <button
+          class="button is-light is-danger is-fullwidth"
+          :disabled="startCompute"
+          @click="reset"
+        >
           Reset
         </button>
       </div>
@@ -82,7 +86,6 @@
       -->
       <component
         :is="compute_type"
-        class="mt-5"
         :difficulty="difficulty"
         :blockData="blockData"
         :startCompute="startCompute"
