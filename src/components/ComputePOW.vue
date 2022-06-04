@@ -19,6 +19,12 @@
     <div class="box">
       <label>
         Set a difficulty level (How many starting zeros)
+        <br />
+
+        <!-- Dynamically show the probability. Probability is 16 as output is in Hex -->
+        <!-- Chance of getting it correct per guess: 1 in {{ 16 ** difficulty }} -->
+        Chance of getting it correct per guess: 1 in
+        {{ Intl.NumberFormat().format(16 ** difficulty) }}
 
         <input
           v-model="difficulty"
@@ -30,6 +36,15 @@
           @keypress.enter="compute"
         />
       </label>
+
+      <div class="mt-2 has-text-danger">
+        <span v-if="difficulty > 5">
+          Danger! This might take very long to compute!
+        </span>
+        <span v-else-if="difficulty > 4">
+          Warning! This might take some time to compute.
+        </span>
+      </div>
     </div>
 
     <!-- @todo dynamically calculate and show the difficulty level in terms of probabilities? -->
