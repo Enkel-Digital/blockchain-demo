@@ -19,6 +19,7 @@
           type="number"
           class="input"
           placeholder="Difficulty level"
+          min="1"
           @keypress.enter="verify"
         />
       </label>

@@ -26,6 +26,7 @@
           class="input"
           placeholder="Difficulty level"
           :disabled="startCompute"
+          min="1"
           @keypress.enter="compute"
         />
       </label>
