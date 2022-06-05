@@ -28,7 +28,7 @@
       <br />
 
       <!-- Word wrap added as this will be quite long and will overflow on mobile -->
-      Final hash: <code style="word-wrap: break-word">{{ hash }}</code>
+      Final hash: <code class="word-wrap">{{ hash }}</code>
     </div>
   </div>
 </template>

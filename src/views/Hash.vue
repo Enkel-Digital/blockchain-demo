@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <code style="word-wrap: break-word">{{ hash }}</code>
+      <code class="word-wrap">{{ hash }}</code>
 
       <details class="content mt-4">
         <summary style="cursor: pointer">Types of Hashes</summary>

@@ -24,10 +24,10 @@ const store = useStore();
           <button class="delete" @click="store.clearNotif"></button>
 
           <!-- Word wrap CSS added to deal with unusually long slugs on small screens -->
-          <span style="word-wrap: break-word">{{ store.notifContent }}</span>
+          <span class="word-wrap">{{ store.notifContent }}</span>
 
           <!-- Alternative allowing HTML content to be shown -->
-          <!-- <span style="word-wrap: break-word" v-html="store.notifContent" /> -->
+          <!-- <span class="word-wrap" v-html="store.notifContent" /> -->
         </div>
       </div>
     </div>
@@ -63,5 +63,9 @@ const store = useStore();
 */
 input:not(:placeholder-shown):invalid {
   background-color: lightpink;
+}
+
+.word-wrap {
+  word-wrap: break-word;
 }
 </style>

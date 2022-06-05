@@ -55,11 +55,11 @@
         <div v-if="secretKey && publicKey" class="column is-full">
           <div class="box">
             Private Key:
-            <code style="word-wrap: break-word">{{ secretKey }}</code>
+            <code class="word-wrap">{{ secretKey }}</code>
             <br />
 
             Public Key:
-            <code style="word-wrap: break-word">{{ publicKey }}</code>
+            <code class="word-wrap">{{ publicKey }}</code>
           </div>
         </div>
 
