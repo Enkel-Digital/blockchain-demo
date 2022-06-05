@@ -32,6 +32,11 @@ export default createRouter({
       name: "pow",
       component: () => import("../views/POW.vue"),
     },
+    {
+      path: "/signatures",
+      name: "signatures",
+      component: () => import("../views/Signatures.vue"),
+    },
 
     {
       path: "/about",

@@ -60,6 +60,7 @@ export default {
       menuItems: [
         { name: "Hashing", link: { name: "hash" } },
         { name: "Proof of Work", link: { name: "pow" } },
+        { name: "Signatures", link: { name: "signatures" } },
         { name: "About", link: { name: "about" } },
       ],
     };

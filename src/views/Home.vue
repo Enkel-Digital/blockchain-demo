@@ -41,6 +41,15 @@
       >
         Proof of Work
       </router-link>
+
+      <br />
+
+      <router-link
+        class="button is-light is-success is-fullwidth is-large"
+        :to="{ name: 'signatures' }"
+      >
+        Signatures
+      </router-link>
     </div>
   </div>
 </template>
