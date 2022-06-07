@@ -1,15 +1,19 @@
 <template>
   <div class="box">
-    <p class="title is-4 mb-1">Signature</p>
+    <p class="title is-4 mb-1">Signature Created</p>
+
+    <!-- @todo Wrap this in copy on click -->
+    <div class="mb-2">
+      <code class="word-wrap">{{ signature }}</code>
+    </div>
+
     <p>
-      The content is signed using the secret / private key, and can only be
-      verified with the corresponding public key.
+      This signature is created by signing the input using the secret / private
+      key and can only be verified with the corresponding public key.
     </p>
 
-    Signature: <code class="word-wrap">{{ signature }}</code>
-
     <details class="content mt-4">
-      <summary style="cursor: pointer">Signatures</summary>
+      <summary style="cursor: pointer">More info</summary>
       <ul>
         <li>Signing is something build on Asymmetric Cryptography</li>
         <li>
@@ -68,10 +72,23 @@ export default defineComponent({
   },
 
   methods: {
-    async updateSignature() {
-      // Output length config is required because the default length for the SHA3 function is 512bits
-      // So this is needed to set to use sha3-256, and the sha256 function will simply ignore this extra config object.
-      this.signature = this.input;
+    updateSignature() {
+      // Get private key from parent
+      const key = EC.keyFromPrivate(this.secretKey);
+
+      this.signature = key
+        .sign(this.input)
+        .toDER()
+        .map((byte: number) => ("0" + (byte & 0xff).toString(16)).slice(-2))
+        .join("");
+
+      // Alternative using a utility function
+      // Ref: https://stackoverflow.com/questions/34309988/byte-array-to-hex-string-conversion-in-javascript
+      // const byteArrayToHexString = (byteArray: number[]) =>
+      //   byteArray
+      //     .map((byte: number) => ("0" + (byte & 0xff).toString(16)).slice(-2))
+      //     .join("");
+      // this.signature = byteArrayToHexString(key.sign(this.input).toDER());
     },
   },
 });
