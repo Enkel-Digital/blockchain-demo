@@ -140,8 +140,12 @@
             Dynamic component used based on the tab selected
             Reference: https://vuejs.org/guide/essentials/component-basics.html#dynamic-components
           -->
-          <!-- @todo Pass in the values as props -->
-          <component :is="tab" />
+          <component
+            :is="tab"
+            :secretKey="secretKey"
+            :publicKey="publicKey"
+            :input="input"
+          />
         </div>
       </div>
     </div>
@@ -152,7 +156,7 @@
 import { defineComponent } from "vue";
 
 import SignatureCreate from "../components/SignatureCreate.vue";
-import SignatureVerify from "../components/SignatureCreate.vue";
+import SignatureVerify from "../components/SignatureVerify.vue";
 
 import { ec } from "elliptic";
 
