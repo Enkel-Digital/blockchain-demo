@@ -63,18 +63,41 @@
             </div>
 
             <div v-if="inputKeys === true">
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <input
-                    v-model="secretKey"
-                    type="text"
-                    class="input"
-                    placeholder="Secret Key"
-                  />
+              <label>
+                Need to enter a 64 hexadecimal characters
+                <br />
+
+                Public key will be generated once secret key is entered
+
+                <input
+                  v-model="secretKey"
+                  type="text"
+                  class="input"
+                  placeholder="Secret Key"
+                  pattern="[0-9a-fA-F]+$"
+                  minlength="64"
+                  maxlength="64"
+                />
+              </label>
+
+              <!--
+                Only show this UI if a full private key is entered,
+                the secretKey entered is a valid hexadecimal string,
+                and the public key has been successfully generated.
+              -->
+              <div
+                v-if="
+                  secretKey.length === 64 &&
+                  /[0-9a-fA-F]+$/.test(secretKey) &&
+                  publicKey !== ''
+                "
+              >
+                <div class="mb-2">
+                  Private Key: <code class="word-wrap">{{ secretKey }}</code>
                 </div>
-                <div class="control">
-                  <button class="button is-info">Use</button>
-                </div>
+
+                Public Key:
+                <code class="word-wrap">{{ publicKey }}</code>
               </div>
             </div>
 
@@ -172,8 +195,8 @@ export default defineComponent({
     tab?: "SignatureCreate" | "SignatureVerify";
 
     inputKeys?: boolean;
-    publicKey?: string;
-    secretKey?: string;
+    publicKey: string;
+    secretKey: string;
 
     input: string;
   } {
@@ -185,11 +208,18 @@ export default defineComponent({
       // Defaults to undefined so that the UI shows neither
       inputKeys: undefined,
 
-      publicKey: undefined,
-      secretKey: undefined,
+      publicKey: "",
+      secretKey: "",
 
       input: "",
     };
+  },
+
+  watch: {
+    secretKey() {
+      // Only call the useKey function if user is entering keys manually
+      if (this.inputKeys) this.useKey();
+    },
   },
 
   methods: {
@@ -204,6 +234,20 @@ export default defineComponent({
       // Reset the key pair in case user generated it before hand
       this.publicKey = "";
       this.secretKey = "";
+    },
+
+    useKey() {
+      // Do nothing if secretKey input is empty, not 64 characters or not a hexadecimal string.
+      if (
+        !this.secretKey ||
+        this.secretKey.length !== 64 ||
+        !/[0-9a-fA-F]+$/.test(this.secretKey)
+      )
+        return;
+
+      // Generate the public key from the user's secret key input
+      const key = EC.keyFromPrivate(this.secretKey);
+      this.publicKey = key.getPublic().encode("hex", true); // Regardless if compact or not same results
     },
 
     generateKeys() {
