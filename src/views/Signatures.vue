@@ -27,11 +27,12 @@
 
             <div class="content">
               <ul>
+                <li>A secret/public key pair is needed to run this demo</li>
                 <li>
                   Either click generate to create a new secret/public key pair
                   for this demo
                 </li>
-                <li>Or, click input to enter your own key pair</li>
+                <li>Or, click input to enter your own secret key</li>
               </ul>
             </div>
 
@@ -64,10 +65,8 @@
 
             <div v-if="inputKeys === true">
               <label>
-                Need to enter a 64 hexadecimal characters
-                <br />
-
-                Public key will be generated once secret key is entered
+                Enter your 64 hexadecimal character secret key, the public key
+                will be generated once secret key is entered.
 
                 <input
                   v-model="secretKey"
@@ -116,59 +115,64 @@
           <hr />
         </div>
 
-        <div class="column is-full">
-          <div class="box">
-            <label>
-              <p class="subtitle mb-2">Enter your data</p>
+        <div v-if="secretKey && publicKey" class="column is-full">
+          <div class="columns is-multiline is-vcentered">
+            <div class="column is-full">
+              <div class="box">
+                <label>
+                  <p class="subtitle mb-2">Enter your data</p>
 
-              <textarea
-                v-model="input"
-                class="textarea"
-                placeholder="Whatever data you want to sign or verify"
-              ></textarea>
-            </label>
+                  <textarea
+                    v-model="input"
+                    class="textarea"
+                    placeholder="Whatever data you want to sign or verify"
+                    rows="2"
+                  ></textarea>
+                </label>
+              </div>
+            </div>
+
+            <div class="column is-full">
+              <hr />
+            </div>
+
+            <div class="column is-half">
+              <button
+                class="button is-light is-fullwidth"
+                :class="{ 'is-success': tab === 'SignatureCreate' }"
+                @click="tab = 'SignatureCreate'"
+              >
+                Create Signature
+              </button>
+            </div>
+
+            <div class="column is-half">
+              <button
+                class="button is-light is-fullwidth"
+                :class="{ 'is-success': tab === 'SignatureVerify' }"
+                @click="tab = 'SignatureVerify'"
+              >
+                Verify Signature
+              </button>
+            </div>
+
+            <!-- Only show this section once user clicks create or verify signature -->
+            <div
+              v-if="tab === 'SignatureCreate' || tab === 'SignatureVerify'"
+              class="column is-full"
+            >
+              <!--
+                Dynamic component used based on the tab selected
+                Reference: https://vuejs.org/guide/essentials/component-basics.html#dynamic-components
+              -->
+              <component
+                :is="tab"
+                :secretKey="secretKey"
+                :publicKey="publicKey"
+                :input="input"
+              />
+            </div>
           </div>
-        </div>
-
-        <div class="column is-full">
-          <hr />
-        </div>
-
-        <div class="column is-half">
-          <button
-            class="button is-light is-fullwidth"
-            :class="{ 'is-success': tab === 'SignatureCreate' }"
-            @click="tab = 'SignatureCreate'"
-          >
-            Create Signature
-          </button>
-        </div>
-
-        <div class="column is-half">
-          <button
-            class="button is-light is-fullwidth"
-            :class="{ 'is-success': tab === 'SignatureVerify' }"
-            @click="tab = 'SignatureVerify'"
-          >
-            Verify Signature
-          </button>
-        </div>
-
-        <!-- Only show this section once user clicks create or verify signature -->
-        <div
-          v-if="tab === 'SignatureCreate' || tab === 'SignatureVerify'"
-          class="column is-full"
-        >
-          <!--
-            Dynamic component used based on the tab selected
-            Reference: https://vuejs.org/guide/essentials/component-basics.html#dynamic-components
-          -->
-          <component
-            :is="tab"
-            :secretKey="secretKey"
-            :publicKey="publicKey"
-            :input="input"
-          />
         </div>
       </div>
     </div>
