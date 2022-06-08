@@ -37,6 +37,11 @@ export default createRouter({
       name: "signatures",
       component: () => import("../views/Signatures.vue"),
     },
+    {
+      path: "/verify-signature",
+      name: "verify-signature",
+      component: () => import("../views/VerifySignature.vue"),
+    },
 
     {
       path: "/about",

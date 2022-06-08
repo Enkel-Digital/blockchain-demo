@@ -32,7 +32,6 @@
       >
         Hash
       </router-link>
-
       <br />
 
       <router-link
@@ -41,14 +40,21 @@
       >
         Proof of Work
       </router-link>
-
       <br />
 
       <router-link
         class="button is-light is-success is-fullwidth is-large"
         :to="{ name: 'signatures' }"
       >
-        Signatures
+        Signatures Demo
+      </router-link>
+      <br />
+
+      <router-link
+        class="button is-light is-success is-fullwidth is-large"
+        :to="{ name: 'verify-signature' }"
+      >
+        Verify Signature
       </router-link>
     </div>
   </div>
