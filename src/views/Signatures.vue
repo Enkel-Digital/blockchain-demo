@@ -157,21 +157,20 @@
             </div>
 
             <!-- Only show this section once user clicks create or verify signature -->
-            <div
-              v-if="tab === 'SignatureCreate' || tab === 'SignatureVerify'"
+
+            <SignatureCreate
+              v-if="tab === 'SignatureCreate'"
+              :secretKey="secretKey"
+              :input="input"
               class="column is-full"
-            >
-              <!--
-                Dynamic component used based on the tab selected
-                Reference: https://vuejs.org/guide/essentials/component-basics.html#dynamic-components
-              -->
-              <component
-                :is="tab"
-                :secretKey="secretKey"
-                :publicKey="publicKey"
-                :input="input"
-              />
-            </div>
+            />
+
+            <SignatureVerify
+              v-else-if="tab === 'SignatureVerify'"
+              :publicKey="publicKey"
+              :input="input"
+              class="column is-full"
+            />
           </div>
         </div>
       </div>
@@ -204,7 +203,6 @@ export default defineComponent({
 
     input: string;
   } {
-    // Default to show create Signature tab
     return {
       // Defaults to undefined so that the UI shows neither
       tab: undefined,
